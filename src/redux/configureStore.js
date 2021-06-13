@@ -11,22 +11,22 @@ import Favorites from './favorites'
 import InitialFeedback from './forms'
 
 const ConfigureStore = () => {
-	const store = createStore(
-		combineReducers({
-			dishes: Dishes,
-			comments: Comments,
-			promotions: Promotions,
-			leaders: Leaders,
-			auth: Auth,
-			favorites: Favorites,
-			...createForms({
-				feedback: InitialFeedback,
-			}),
-		}),
-		applyMiddleware(thunk, logger),
-	)
+  const store = createStore(
+    combineReducers({
+      dishes: Dishes,
+      comments: Comments,
+      promotions: Promotions,
+      leaders: Leaders,
+      auth: Auth,
+      favorites: Favorites,
+      ...createForms({
+        feedback: InitialFeedback,
+      }),
+    }),
+    applyMiddleware(thunk, logger),
+  )
 
-	return store
+  return store
 }
 
 export default ConfigureStore
