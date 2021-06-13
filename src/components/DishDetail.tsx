@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React, { useState } from 'react'
 import {
   Card, CardBody, CardImg, CardText, CardTitle, Breadcrumb, BreadcrumbItem,
