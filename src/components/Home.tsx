@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import React, { useRef } from 'react'
+import React from 'react'
 import {
   Card,
   CardImg,
@@ -9,13 +9,13 @@ import {
   CardTitle,
   CardSubtitle,
 } from 'reactstrap'
-import { FadeTransform } from 'react-animation-components'
+// import { FadeTransform } from 'react-animation-components'
 import LazyLoad from 'react-lazy-load'
 import Loading from './Loading'
 import baseUrl from '../shared/baseUrl'
 
 function RenderCard({ item, isLoading, errMess }) {
-  const nodeRef = useRef(null)
+  // const nodeRef = useRef(null)
   if (isLoading) {
     return (
       <Loading />
@@ -26,20 +26,20 @@ function RenderCard({ item, isLoading, errMess }) {
     )
   }
   return (
-    <FadeTransform nodeRef={nodeRef} in transformProps={{ exitTransform: 'scale(0.5) translateY(-50%)' }}>
-      <Card>
-        <LazyLoad>
-          <CardImg src={baseUrl + item.image} alt={item.name} />
-        </LazyLoad>
-        <CardBody>
-          <CardTitle>
-            {item.name}
-          </CardTitle>
-          {item.designation ? <CardSubtitle>{item.designation}</CardSubtitle> : null}
-          <CardText>{item.description}</CardText>
-        </CardBody>
-      </Card>
-    </FadeTransform>
+    // <FadeTransform nodeRef={nodeRef} in transformProps={{ exitTransform: 'scale(0.5) translateY(-50%)' }}>
+    <Card>
+      <LazyLoad>
+        <CardImg src={baseUrl + item.image} alt={item.name} />
+      </LazyLoad>
+      <CardBody>
+        <CardTitle>
+          {item.name}
+        </CardTitle>
+        {item.designation ? <CardSubtitle>{item.designation}</CardSubtitle> : null}
+        <CardText>{item.description}</CardText>
+      </CardBody>
+    </Card>
+    // </FadeTransform>
   )
 }
 

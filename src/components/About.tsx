@@ -5,7 +5,7 @@ import {
   Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media,
 } from 'reactstrap'
 import { Link } from 'react-router-dom'
-import { Fade, Stagger } from 'react-animation-components'
+// import { Fade, Stagger } from 'react-animation-components'
 import LazyLoad from 'react-lazy-load'
 import baseUrl from '../shared/baseUrl'
 import Loading from './Loading'
@@ -35,11 +35,11 @@ function RenderLeader({ leader }) {
 
 function LeaderList(props) {
   const leaders = props.leaders.leaders.map((leader) => (
-    <Fade in key={leader._id}>
-      <div className="col-12 mt-2">
-        <RenderLeader leader={leader} />
-      </div>
-    </Fade>
+    // <Fade in key={leader._id}>
+    <div className="col-12 mt-2" key={leader._id}>
+      <RenderLeader leader={leader} />
+    </div>
+    // </Fade>
   ))
 
   if (props.leaders.isLoading) {
@@ -55,9 +55,9 @@ function LeaderList(props) {
   }
   return (
     <Media list>
-      <Stagger in>
-        {leaders}
-      </Stagger>
+      {/* <Stagger in> */}
+      {leaders}
+      {/* </Stagger> */}
     </Media>
   )
 }

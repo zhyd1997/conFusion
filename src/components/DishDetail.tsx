@@ -7,7 +7,7 @@ import {
 } from 'reactstrap'
 import { Control, LocalForm } from 'react-redux-form'
 import { Link } from 'react-router-dom'
-import { FadeTransform, Fade, Stagger } from 'react-animation-components'
+// import { FadeTransform, Fade, Stagger } from 'react-animation-components'
 import LazyLoad from 'react-lazy-load'
 import Loading from './Loading'
 import baseUrl from '../shared/baseUrl'
@@ -16,21 +16,21 @@ function RenderDish({ dish }) {
   if (dish != null) {
     return (
       <div className="col-12 col-md-5 m-1">
-        <FadeTransform in transformProps={{ exitTransform: 'scale(0.5) translate&(-50%)' }}>
-          <Card>
-            <LazyLoad>
-              <CardImg top src={baseUrl + dish.image} alt={dish.name} />
-            </LazyLoad>
-            <CardBody>
-              <CardTitle>
-                {dish.name}
-              </CardTitle>
-              <CardText>
-                {dish.description}
-              </CardText>
-            </CardBody>
-          </Card>
-        </FadeTransform>
+        {/* <FadeTransform in transformProps={{ exitTransform: 'scale(0.5) translate&(-50%)' }}> */}
+        <Card>
+          <LazyLoad>
+            <CardImg top src={baseUrl + dish.image} alt={dish.name} />
+          </LazyLoad>
+          <CardBody>
+            <CardTitle>
+              {dish.name}
+            </CardTitle>
+            <CardText>
+              {dish.description}
+            </CardText>
+          </CardBody>
+        </Card>
+        {/* </FadeTransform> */}
       </div>
     )
   }
@@ -44,31 +44,31 @@ function RenderComments({ comments, postComment, dishId }) {
     return (
       <div className="col-12 col-md-5 m-1">
         <h4>Comments</h4>
-        <Stagger in>
-          {comments.map((comment) => (
-            <ul className="list-unstyled" key={comment._id}>
-              <Fade in>
-                <li>
-                  <p>{comment.comment}</p>
-                  <p>
-                    --
-                    {' '}
-                    {comment.author.username}
-                    ,
-                    {new Intl.DateTimeFormat(
-                      'en-US',
-                      {
-                        year: 'numeric',
-                        month: 'short',
-                        day: '2-digit',
-                      },
-                    ).format(new Date(Date.parse(comment.updatedAt)))}
-                  </p>
-                </li>
-              </Fade>
-            </ul>
-          ))}
-        </Stagger>
+        {/* <Stagger in> */}
+        {comments.map((comment) => (
+          <ul className="list-unstyled" key={comment._id}>
+            {/* <Fade in> */}
+            <li>
+              <p>{comment.comment}</p>
+              <p>
+                --
+                {' '}
+                {comment.author.username}
+                ,
+                {new Intl.DateTimeFormat(
+                  'en-US',
+                  {
+                    year: 'numeric',
+                    month: 'short',
+                    day: '2-digit',
+                  },
+                ).format(new Date(Date.parse(comment.updatedAt)))}
+              </p>
+            </li>
+            {/* </Fade> */}
+          </ul>
+        ))}
+        {/* </Stagger> */}
         <CommentForm dishId={dishId} postComment={postComment} />
       </div>
     )
