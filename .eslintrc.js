@@ -6,7 +6,6 @@ module.exports = {
 	'extends': [
 		'eslint:recommended',
 		'plugin:react/recommended',
-		'airbnb',
 		'airbnb/hooks'
 	],
 	'parser': 'babel-eslint',
@@ -23,20 +22,23 @@ module.exports = {
 	'settings': {
 		'react': {
 			'version': 'detect'
-		}
+		},
+		"import/resolver": {
+			typescript: {} // this loads <rootdir>/tsconfig.json to eslint
+		  },
 	},
 	'rules': {
-		'react/jsx-filename-extension': [1, { 'extensions': ['.js', '.jsx'] }],
+		'react/jsx-filename-extension': [1, { 'extensions': ['.ts', '.tsx'] }],
 		'react/jsx-indent': [
 			'error',
-			'tab'
+			2
 		],
 		'react/jsx-pascal-case': 0,
 		'react/destructuring-assignment': 0,
 		'no-underscore-dangle': 0,
 		'indent': [
 			'error',
-			'tab'
+			2
 		],
 		'no-tabs': 0,
 		'react/jsx-indent-props': 0,
