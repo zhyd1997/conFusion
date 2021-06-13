@@ -16,8 +16,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Code Lint
 
 采用了 [Airbnb 的 ESLint 配置](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb),
-前端 `eslint-config-airbnb`，后端为 `eslint-config-airbnb-base`，lint 过程中分而治之，将暂不需要的文件目录添加到 `.eslintignore` 
-中，并将 lint 命令写入脚本：`"lint": "eslint ."`，提高的 lint 效率
+前端 `eslint-config-airbnb`，后端为 `eslint-config-airbnb-base`
 
 ## Cloud Provider
 
