@@ -1,4 +1,4 @@
-import React, { Component, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import {
 	Switch, Route, Redirect, withRouter,
 } from 'react-router-dom'
@@ -57,141 +57,138 @@ const mapDispatchToProps = (dispatch) => (
 	}
 )
 
-class Main extends Component {
-	componentDidMount() {
-		this.props.fetchDishes()
-		this.props.fetchComments()
-		this.props.fetchPromos()
-		this.props.fetchLeaders()
-		// this.props.fetchFavorites()
-	}
+function Main({ props }) {
+	useEffect(() => {
+		props.fetchDishes()
+		props.fetchComments()
+		props.fetchPromos()
+		props.fetchLeaders()
+		// props.fetchFavorites()
+	}, [props])
+	const HomePage = () => (
+		<Home
+			dish={props.dishes.dishes.filter((dish) => dish.featured)[0]}
+			dishesLoading={props.dishes.isLoading}
+			dishesErrMess={props.dishes.errMess}
+			promotion={props.promotions.promotions.filter((promo) => promo.featured)[0]}
+			promoLoading={props.promotions.isLoading}
+			promoErrMess={props.promotions.errMess}
+			leader={props.leaders.leaders.filter((leader) => leader.featured)[0]}
+			leadersLoading={props.leaders.isLoading}
+			leadersErrMess={props.leaders.errMess}
+		/>
+	)
 
-	render() {
-		const HomePage = () => (
-			<Home
-				dish={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
-				dishesLoading={this.props.dishes.isLoading}
-				dishesErrMess={this.props.dishes.errMess}
-				promotion={this.props.promotions.promotions.filter((promo) => promo.featured)[0]}
-				promoLoading={this.props.promotions.isLoading}
-				promoErrMess={this.props.promotions.errMess}
-				leader={this.props.leaders.leaders.filter((leader) => leader.featured)[0]}
-				leadersLoading={this.props.leaders.isLoading}
-				leadersErrMess={this.props.leaders.errMess}
-			/>
-		)
+	const DishWithId = ({ match }) => (
+		// props.auth.isAuthenticated
+		// 	?
+		<DishDetail
+			dish={props.dishes.dishes.filter((dish) => dish._id === match.params.dishId)[0]}
+			isLoading={props.dishes.isLoading}
+			errMess={props.dishes.errMess}
+			comments={props.comments.comments.filter((comment) => comment._id)}
+			commentsErrMess={props.comments.errMess}
+			postComment={props.postComment}
+			// favorite={props.favorites.favorites.dishes.filter(
+			// 	(dish) => dish._id === match.params.dishId)
+			// }
+			// favorite={false}
+			// postFavorite={props.postFavorites}
+		/>
 
-		const DishWithId = ({ match }) => (
-			// this.props.auth.isAuthenticated
-			// 	?
-			<DishDetail
-				dish={this.props.dishes.dishes.filter((dish) => dish._id === match.params.dishId)[0]}
-				isLoading={this.props.dishes.isLoading}
-				errMess={this.props.dishes.errMess}
-				comments={this.props.comments.comments.filter((comment) => comment._id)}
-				commentsErrMess={this.props.comments.errMess}
-				postComment={this.props.postComment}
-				// favorite={this.props.favorites.favorites.dishes.filter(
-				// 	(dish) => dish._id === match.params.dishId)
-				// }
-				// favorite={false}
-				// postFavorite={this.props.postFavorites}
-			/>
-
-			// :
-			// 	<DishDetail
-			// 		dish={this.props.dishes.dishes.filter((dish) => dish._id === match.params.dishId)[0]}
-			// 		isLoading={this.props.dishes.isLoading}
-			// 		errMess={this.props.dishes.errMess}
-			// 		comments={this.props.comments.comments.filter((comment) => comment._id)}
-			// 		commentsErrMess={this.props.comments.errMess}
-			// 		postComment={this.props.postComment}
-			// 		// favorite={false}
-			// 		// postFavorite={this.props.postFavorites}
-			// 	/>
-
-		)
-
-		// const PrivateRoute = ({ component: Component, ...rest }) => (
-		// 	<Route
-		// 		{...rest}
-		// 		render={(props) => (
-		// 			this.props.auth.isAuthenticated
-		// 				? <Component {...props} />
-		// 				: (
-		// 					<Redirect to={{
-		// 						pathname: '/home',
-		// 						state: { from: props.location },
-		// 					}}
-		// 					/>
-		// 				)
-		// 		)}
+		// :
+		// 	<DishDetail
+		// 		dish={props.dishes.dishes.filter((dish) => dish._id === match.params.dishId)[0]}
+		// 		isLoading={props.dishes.isLoading}
+		// 		errMess={props.dishes.errMess}
+		// 		comments={props.comments.comments.filter((comment) => comment._id)}
+		// 		commentsErrMess={props.comments.errMess}
+		// 		postComment={props.postComment}
+		// 		// favorite={false}
+		// 		// postFavorite={props.postFavorites}
 		// 	/>
-		// )
 
-		const MainRoutes = () => {
-			const nodeRef = useRef(null)
-			return (
-				<TransitionGroup>
-					<CSSTransition
-						nodeRef={nodeRef}
-						key={this.props.location.key}
-						classNames="page"
-						timeout={300}
-					>
-						<Switch location={this.props.location}>
-							<Route path="/home" component={HomePage} />
-							<Route exact path="/aboutus" component={() => <About leaders={this.props.leaders} />} />
-							<Route
-								exact
-								path="/menu"
-								component={() => (
-									<Menu
-										dishes={this.props.dishes}
-									/>
-								)}
-							/>
-							<Route path="/menu/:dishId" component={DishWithId} />
-							{/* <PrivateRoute */}
-							{/*	exact */}
-							{/*	path="/favorites" */}
-							{/*	component={() => ( */}
-							{/*		<Favorites */}
-							{/*			favorites={this.props.favorites} */}
-							{/*			deleteFavorite={this.props.deleteFavorites} */}
-							{/*		/> */}
-							{/*	)} */}
-							{/* /> */}
-							<Route
-								exact
-								path="/contactus"
-								component={() => (
-									<Contact
-										resetFeedbackForm={this.props.resetFeedbackForm}
-										postFeedback={this.props.postFeedback}
-									/>
-								)}
-							/>
-							<Redirect to="/home" />
-						</Switch>
-					</CSSTransition>
-				</TransitionGroup>
-			)
-		}
+	)
 
+	// const PrivateRoute = ({ component: Component, ...rest }) => (
+	// 	<Route
+	// 		{...rest}
+	// 		render={(props) => (
+	// 			props.auth.isAuthenticated
+	// 				? <Component {...props} />
+	// 				: (
+	// 					<Redirect to={{
+	// 						pathname: '/home',
+	// 						state: { from: props.location },
+	// 					}}
+	// 					/>
+	// 				)
+	// 		)}
+	// 	/>
+	// )
+
+	const MainRoutes = () => {
+		const nodeRef = useRef(null)
 		return (
-			<div>
-				<Header
-					auth={this.props.auth}
-					signupUser={this.props.signupUser}
-					loginUser={this.props.loginUser}
-					logoutUser={this.props.logoutUser}
-				/>
-				<MainRoutes />
-				<Footer />
-			</div>
+			<TransitionGroup>
+				<CSSTransition
+					nodeRef={nodeRef}
+					key={props.location.key}
+					classNames="page"
+					timeout={300}
+				>
+					<Switch location={props.location}>
+						<Route path="/home" component={HomePage} />
+						<Route exact path="/aboutus" component={() => <About leaders={props.leaders} />} />
+						<Route
+							exact
+							path="/menu"
+							component={() => (
+								<Menu
+									dishes={props.dishes}
+								/>
+							)}
+						/>
+						<Route path="/menu/:dishId" component={DishWithId} />
+						{/* <PrivateRoute */}
+						{/*	exact */}
+						{/*	path="/favorites" */}
+						{/*	component={() => ( */}
+						{/*		<Favorites */}
+						{/*			favorites={props.favorites} */}
+						{/*			deleteFavorite={props.deleteFavorites} */}
+						{/*		/> */}
+						{/*	)} */}
+						{/* /> */}
+						<Route
+							exact
+							path="/contactus"
+							component={() => (
+								<Contact
+									resetFeedbackForm={props.resetFeedbackForm}
+									postFeedback={props.postFeedback}
+								/>
+							)}
+						/>
+						<Redirect to="/home" />
+					</Switch>
+				</CSSTransition>
+			</TransitionGroup>
 		)
 	}
+
+	return (
+		<div>
+			<Header
+				auth={props.auth}
+				signupUser={props.signupUser}
+				loginUser={props.loginUser}
+				logoutUser={props.logoutUser}
+			/>
+			<MainRoutes />
+			<Footer />
+		</div>
+	)
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main))
