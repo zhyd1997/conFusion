@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React from 'react'
 import {
   Media, Breadcrumb, BreadcrumbItem, Button,

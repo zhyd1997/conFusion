@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React from 'react'
 import {
   Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media,
