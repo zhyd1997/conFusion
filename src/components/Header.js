@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import {
 	Nav, Navbar, NavbarBrand, NavbarToggler, Collapse, NavItem, Jumbotron,
 	Button, Modal, ModalHeader, ModalBody,
@@ -6,48 +6,25 @@ import {
 } from 'reactstrap'
 import { NavLink } from 'react-router-dom'
 
-class Header extends Component {
-	constructor(props) {
-		super(props)
-
-		this.state = {
-			isNavOpen: false,
-			isSignUpModalOpen: false,
-			isSignInModalOpen: false,
-		}
-		this.toggleNav = this.toggleNav.bind(this)
-		this.toggleSignUpModal = this.toggleSignUpModal.bind(this)
-		this.toggleSignInModal = this.toggleSignInModal.bind(this)
-		this.handleSignup = this.handleSignup.bind(this)
-		this.handleLogin = this.handleLogin.bind(this)
-		this.handleLogout = this.handleLogout.bind(this)
+function Header ({ props }) {
+	const [isNavOpen, setIsNavOpen] = useState(false)
+	const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false)
+	const [isSignInModalOpen, setIsSignInModalOpen] = useState(false)
+	const toggleNav = () => {
+		setIsNavOpen(!isNavOpen)
 	}
 
-	toggleNav() {
-		this.setState(
-			{ isNavOpen: !this.state.isNavOpen },
-		)
+	const toggleSignUpModal = () => {
+		setIsSignUpModalOpen(!setIsSignUpModalOpen)
 	}
 
-	toggleSignUpModal() {
-		this.setState(
-			{
-				isSignUpModalOpen: !this.state.isSignUpModalOpen,
-			},
-		)
+	const toggleSignInModal = () => {
+		setIsSignInModalOpen(!isSignInModalOpen)
 	}
 
-	toggleSignInModal() {
-		this.setState(
-			{
-				isSignInModalOpen: !this.state.isSignInModalOpen,
-			},
-		)
-	}
-
-	handleSignup(event) {
-		this.toggleSignUpModal()
-		this.props.signupUser({
+	const handleSignup = (event) => {
+		toggleSignUpModal()
+		props.signupUser({
 			username: this.username.value,
 			password: this.password.value,
 			firstname: this.firstname.value,
@@ -56,9 +33,9 @@ class Header extends Component {
 		event.preventDefault()
 	}
 
-	handleLogin(event) {
-		this.toggleSignInModal()
-		this.props.loginUser({
+	const handleLogin = (event) => {
+		toggleSignInModal()
+		props.loginUser({
 			username: this.username.value,
 			password: this.password.value,
 			remember: this.remember.checked,
@@ -66,11 +43,9 @@ class Header extends Component {
 		event.preventDefault()
 	}
 
-	handleLogout() {
-		this.props.logoutUser()
+	const handleLogout = () => {
+		props.logoutUser()
 	}
-
-	render() {
 		return (
 			<div>
 				<div className="BLM">
@@ -81,11 +56,11 @@ class Header extends Component {
 				</div>
 				<Navbar dark expand="md">
 					<div className="container">
-						<NavbarToggler onClick={this.toggleNav} />
+						<NavbarToggler onClick={toggleNav} />
 						<NavbarBrand className="mr-auto" href="/">
 							<img src="logo.png" height="30" width="41" alt="Ristorante Con Fusion" />
 						</NavbarBrand>
-						<Collapse isOpen={this.state.isNavOpen} navbar>
+						<Collapse isOpen={isNavOpen} navbar>
 							<Nav navbar>
 								<NavItem>
 									<NavLink className="nav-link" to="/home">
@@ -120,21 +95,21 @@ class Header extends Component {
 							</Nav>
 							<Nav className="ml-auto" navbar>
 								<NavItem>
-									{ !this.props.auth.isAuthenticated
+									{ !props.auth.isAuthenticated
 										?										(
 											<div>
-												<Button outline onClick={this.toggleSignInModal}>
+												<Button outline onClick={toggleSignInModal}>
 													<span className="fa fa-sign-in fa-lg" />
 													&nbsp;Login
-													{this.props.auth.isFetching
+													{props.auth.isFetching
 														?													<span className="fa fa-spinner fa-pulse fa-fw" />
 														:													null}
 												</Button>
 												&nbsp;&nbsp;&nbsp;&nbsp;
-												<Button outline onClick={this.toggleSignUpModal}>
+												<Button outline onClick={toggleSignUpModal}>
 													<span className="fa fa-user-plus fa-lg" />
 													&nbsp;SignUp
-													{this.props.auth.isFetching
+													{props.auth.isFetching
 														?													<span className="fa fa-spinner fa-pulse fa-fw" />
 														:													null}
 												</Button>
@@ -143,13 +118,13 @@ class Header extends Component {
 										:										(
 											<div>
 												<div className="navbar-text mr-3">
-													{this.props.auth.user.username}
+													{props.auth.user.username}
 												</div>
-												<Button outline onClick={this.handleLogout}>
+												<Button outline onClick={handleLogout}>
 													<span className="fa fa-sign-out fa-lg" />
 													&nbsp;Logout
 													{
-														this.props.auth.isFetching
+														props.auth.isFetching
 															?														<span className="fa fa-spinner fa-pulse fa-fw" />
 															:														null
 													}
@@ -159,10 +134,10 @@ class Header extends Component {
 								</NavItem>
 							</Nav>
 						</Collapse>
-						<Modal isOpen={this.state.isSignUpModalOpen} toggle={this.toggleSignUpModal}>
-							<ModalHeader toggle={this.toggleSignUpModal}>SignUp</ModalHeader>
+						<Modal isOpen={isSignUpModalOpen} toggle={toggleSignUpModal}>
+							<ModalHeader toggle={toggleSignUpModal}>SignUp</ModalHeader>
 							<ModalBody>
-								<Form onSubmit={this.handleSignup}>
+								<Form onSubmit={handleSignup}>
 									<FormGroup>
 										<Label htmlFor="username">Username</Label>
 										<Input
@@ -205,10 +180,10 @@ class Header extends Component {
 								</Form>
 							</ModalBody>
 						</Modal>
-						<Modal isOpen={this.state.isSignInModalOpen} toggle={this.toggleSignInModal}>
-							<ModalHeader toggle={this.toggleSignInModal}>Login</ModalHeader>
+						<Modal isOpen={isSignInModalOpen} toggle={toggleSignInModal}>
+							<ModalHeader toggle={toggleSignInModal}>Login</ModalHeader>
 							<ModalBody>
-								<Form onSubmit={this.handleLogin}>
+								<Form onSubmit={handleLogin}>
 									<FormGroup>
 										<Label htmlFor="username">Username</Label>
 										<Input
@@ -261,6 +236,5 @@ class Header extends Component {
 			</div>
 		)
 	}
-}
 
 export default Header
